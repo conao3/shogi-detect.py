@@ -27,11 +27,14 @@ def fit_size(img, h, w):
 def main():
     mainWindow = CV2Window('main')
     
+    print("loading %d files..." % len(files))
     files = sorted(glob.glob('../images/raw/*'))
-    print(len(files), "files")
-    
     raw_imgs = [cv2.imread(f) for f in files]
+
+    print("resizing...")
     imgs = [fit_size(img, 500, 500) for img in raw_imgs]
+
+    print("resize complete")
     raw_img = raw_imgs[1]
     img = imgs[1]
     mainWindow.imgshow(img)
