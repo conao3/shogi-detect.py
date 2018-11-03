@@ -51,6 +51,9 @@ def get_lines(img, show=True, threshold=80, minLineLength=50, maxLineGap=5):
         window.imgshow(img)
     return lines
 
+def get_board_point(img, show=True):
+    pass
+
 def main():
     mainWindow = CV2Window('main')
 
