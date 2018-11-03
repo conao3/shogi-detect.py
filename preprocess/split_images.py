@@ -34,14 +34,19 @@ class CV2Window:
     def close(self):
         cv2.destroyWindow(self.name)
 
-def fit_size(img, h, w):
+def fit_size(raw_img, show=True, h=500, w=500):
     # Resize numpy image data fit to h, w. Contain aspect ratio.
     # IMG required to be a color numpy image data.
     # H is height, W is width as integer.
     
-    size = img.shape[:2]
+    size = raw_img.shape[:2]
     f = min(h / size[0], w / size[1])
-    return cv2.resize(img, (int(size[1] * f), int(size[0] * f)), interpolation=cv2.INTER_AREA)
+    img = cv2.resize(raw_img, (int(size[1] * f), int(size[0] * f)), interpolation=cv2.INTER_AREA)
+    if show:
+        window = CV2Window('raw image')
+        window.imgshow(img)
+        
+    return img
 
 def get_edges(img, show=True):
     # Edge detection by 'canny edge detection'.
@@ -70,21 +75,50 @@ def get_lines(img, show=True, threshold=80, minLineLength=50, maxLineGap=5):
         window.imgshow(img)
     return lines
 
+def contours(img, show=True):
+    edges = get_edges(img, False)
+    contours = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[1]
+    blank = np.zeros(img.shape, np.uint8)
+    min_area = img.shape[0] * img.shape[1] * 0.2
+    large_contours = [c for c in contours if cv2.contourArea(c) > min_area]
+    cv2.drawContours(blank, large_contours, -1, (0, 255, 0), 1)
+    return large_contours
+
+def convex(img, show=True):
+    # get convex hull(凸包)
+    
+    blank = np.copy(img)
+    convexes = []
+    for cnt in contours(img, False):
+        convex = cv2.convexHull(cnt)
+        cv2.drawContours(blank, [convex], -1, (0, 255, 0), 2)
+        convexes.append(convex)
+    return convexes
+
+def convex_poly(img, show=True):
+    cnts = convex(img, show)
+    blank = np.copy(img)
+    polies = []
+    for cnt in cnts:
+        arclen = cv2.arcLength(cnt, True)
+        poly = cv2.approxPolyDP(cnt, 0.02*arclen, True)
+        cv2.drawContours(blank, [polu], -1, (0, 255, 0), 2)
+        polies.append(poly)
+    return [poly[:, 0, :] for poly in polies]
+
 def get_board_point(raw_img, show=True):
     # Get range of shogi board as 2Dpoint (x1,y1), (x2,y2).
     # IMG required to be a color numpy image data.
 
     # resize
-    img = fit_size(raw_img, 500, 500)
-
-    if show:
-        rawImgWindow = CV2Window('raw image')
-        rawImgWindow.imgshow(img)
+    img = fit_size(raw_img, show, 500, 500)
 
     # line detection
     lines = get_lines(img, show)
 
-    
+    # poly
+    polies = convex_poly(img, True)
+
 def main():
     imgpaths = sorted(glob.glob('../images/raw/*.png'))
 
