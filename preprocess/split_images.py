@@ -88,7 +88,7 @@ def get_board_point(raw_img, show=True):
 def main():
     imgpaths = sorted(glob.glob('../images/raw/*.png'))
 
-    points = [get_board_point(cv2.imread(imgpath), False) for imgpath in imgpaths]
+    points = [get_board_point(cv2.imread(imgpath), True) for imgpath in imgpaths]
     
     cv2.waitKey(0)
 
