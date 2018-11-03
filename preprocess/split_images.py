@@ -9,6 +9,11 @@ class Point:
     def __init__(self, _x=0, _y=0):
         self.x = _x
         self.y = _y
+
+class Range:
+    def __init__(self, _p1=Point(), _p2=Point()):
+        self.p1 = _p1
+        self.p2 = _p2
         
 class CV2Window:
     def __init__(self, _name):
