@@ -26,24 +26,35 @@ def fit_size(img, h, w):
 
 def get_edges(img, show=True):
     # Edge detection by canny edge detection.
-    # IMG required to be a color numpy array image.
+    # IMG required to be a color numpy image data.
     
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     edges = cv2.Canny(gray, 50, 150)
     if show:
-        window = CV2Window('edges')
+        window = CV2Window('edge detection')
         window.imgshow(edges)
         
     return edges
 
-def line(img, show=True, threshold=80, minLineLength=50, maxLineGap=5):
-    edges = get_edges(img, True)
-    lines = cv2.HoughLinesP(edges, 1, np.pi/180, threshold, 300, minLineLength, maxLineGap)
+def get_lines(img, show=True, threshold=80, minLineLength=50, maxLineGap=5):
+    # Line detection by stochastic Hough transform
+    # IMG required to be a color numpy image data.
     
+    edges = get_edges(img, True)
+    lines = cv2.HoughLinesP(edges, 1, np.pi/180, threshold, minLineLength, maxLineGap)
+    if show:
+        window = CV2Window('line detection')
+        for line in lines:
+            for x1,y1,x2,y2 in line:
+                cv2.line(img,(x1,y1),(x2,y2),(0,255,0),2)
+            
+        window.imgshow(img)
+    return lines
+
 def main():
     mainWindow = CV2Window('main')
 
-    files = sorted(glob.glob('../images/raw/*'))
+    files = sorted(glob.glob('../images/raw/*.png'))
 
     print("loading %d files..." % len(files))
     raw_imgs = [cv2.imread(f) for f in files]
@@ -52,12 +63,11 @@ def main():
     imgs = [fit_size(img, 500, 500) for img in raw_imgs]
 
     print("resize complete")
-    raw_img = raw_imgs[1]
-    img = imgs[1]
+    raw_img = raw_imgs[0]
+    img = imgs[0]
     mainWindow.imgshow(img)
 
-    line(img)
-    line(img)
+    lines = get_lines(img, 100)
     cv2.waitKey(0)
 
 if __name__ == '__main__':
