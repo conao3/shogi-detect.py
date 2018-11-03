@@ -5,6 +5,11 @@ import numpy as np
 import itertools
 import glob
 
+class Point:
+    def __init__(self, _x=0, _y=0):
+        self.x = _x
+        self.y = _y
+        
 class CV2Window:
     def __init__(self, _name):
         self.name = _name
