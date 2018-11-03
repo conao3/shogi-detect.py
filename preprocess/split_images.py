@@ -6,16 +6,21 @@ import itertools
 import glob
 
 class Point:
+    # 2D point (x,y).
     def __init__(self, _x=0, _y=0):
         self.x = _x
         self.y = _y
 
 class Range:
+    # 2D range p1 to p2.
+    
     def __init__(self, _p1=Point(), _p2=Point()):
         self.p1 = _p1
         self.p2 = _p2
         
 class CV2Window:
+    # CV2 named window rapper.
+    
     def __init__(self, _name):
         self.name = _name
         
@@ -30,12 +35,16 @@ class CV2Window:
         cv2.destroyWindow(self.name)
 
 def fit_size(img, h, w):
+    # Resize numpy image data fit to h, w. Contain aspect ratio.
+    # IMG required to be a color numpy image data.
+    # H is height, W is width as integer.
+    
     size = img.shape[:2]
     f = min(h / size[0], w / size[1])
     return cv2.resize(img, (int(size[1] * f), int(size[0] * f)), interpolation=cv2.INTER_AREA)
 
 def get_edges(img, show=True):
-    # Edge detection by canny edge detection.
+    # Edge detection by 'canny edge detection'.
     # IMG required to be a color numpy image data.
     
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -47,7 +56,7 @@ def get_edges(img, show=True):
     return edges
 
 def get_lines(img, show=True, threshold=80, minLineLength=50, maxLineGap=5):
-    # Line detection by stochastic Hough transform
+    # Line detection by 'stochastic hough transform'.
     # IMG required to be a color numpy image data.
     
     edges = get_edges(img, show)
