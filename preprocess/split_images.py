@@ -5,14 +5,14 @@ import numpy as np
 import itertools
 import glob
 
-def CV2Window:
+class CV2Window:
     def __init__(self, _name):
         self.name = _name
         
         cv2.namedWindow(self.name)
 
-    def imgshow(img, wait=True):
-        cv2.imshow(img)
+    def imgshow(self, img, wait=True):
+        cv2.imshow(self.name, img)
         if wait:
             cv2.waitKey(0)
 
