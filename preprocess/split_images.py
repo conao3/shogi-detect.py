@@ -16,6 +16,9 @@ class CV2Window:
         if wait:
             cv2.waitKey(0)
 
+    def close(self):
+        cv2.destroyWindow(self.name)
+
 def fit_size(img, h, w):
     size = img.shape[:2]
     f = min(h / size[0], w / size[1])
