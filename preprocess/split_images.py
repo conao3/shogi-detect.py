@@ -40,7 +40,7 @@ def get_lines(img, show=True, threshold=80, minLineLength=50, maxLineGap=5):
     # Line detection by stochastic Hough transform
     # IMG required to be a color numpy image data.
     
-    edges = get_edges(img, True)
+    edges = get_edges(img, show)
     lines = cv2.HoughLinesP(edges, 1, np.pi/180, threshold, minLineLength, maxLineGap)
     if show:
         window = CV2Window('line detection')
@@ -51,26 +51,26 @@ def get_lines(img, show=True, threshold=80, minLineLength=50, maxLineGap=5):
         window.imgshow(img)
     return lines
 
-def get_board_point(img, show=True):
-    pass
+def get_board_point(raw_img, show=True):
+    # Get range of shogi board as 2Dpoint (x1,y1), (x2,y2).
+    # IMG required to be a color numpy image data.
 
+    # resize
+    img = fit_size(raw_img, 500, 500)
+
+    if show:
+        rawImgWindow = CV2Window('raw image')
+        rawImgWindow.imgshow(img)
+
+    # line detection
+    lines = get_lines(img, show)
+
+    
 def main():
-    mainWindow = CV2Window('main')
+    imgpaths = sorted(glob.glob('../images/raw/*.png'))
 
-    files = sorted(glob.glob('../images/raw/*.png'))
-
-    print("loading %d files..." % len(files))
-    raw_imgs = [cv2.imread(f) for f in files]
-
-    print("resizing...")
-    imgs = [fit_size(img, 500, 500) for img in raw_imgs]
-
-    print("resize complete")
-    raw_img = raw_imgs[0]
-    img = imgs[0]
-    mainWindow.imgshow(img)
-
-    lines = get_lines(img, 100)
+    points = [get_board_point(cv2.imread(imgpath), False) for imgpath in imgpaths]
+    
     cv2.waitKey(0)
 
 if __name__ == '__main__':
