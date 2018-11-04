@@ -70,39 +70,51 @@ def get_lines(img, show=True, threshold=80, minLineLength=50, maxLineGap=5):
         window = CV2Window('line detection')
         for line in lines:
             for x1,y1,x2,y2 in line:
-                cv2.line(img,(x1,y1),(x2,y2),(0,255,0),2)
+                cv2.line(img, (x1,y1), (x2,y2), (0,255,0), 2)
             
         window.imgshow(img)
     return lines
 
-def contours(img, show=True):
+def get_contours(img, show=True):
+    # Extract contours.
+    # IMG required to be a color numpy image data.
+    
     edges = get_edges(img, False)
     contours = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[1]
-    blank = np.zeros(img.shape, np.uint8)
+
+    # remove too small contours
     min_area = img.shape[0] * img.shape[1] * 0.2
     large_contours = [c for c in contours if cv2.contourArea(c) > min_area]
-    cv2.drawContours(blank, large_contours, -1, (0, 255, 0), 1)
+
+    if show:
+        window = CV2Window('contour detection (raw)')
+        img = cv2.drawContours(img, contours, -1, (0,255,0), 3)
+        window.imgshow(img)
+        
     return large_contours
 
-def convex(img, show=True):
+def get_convex(img, show=True):
     # get convex hull(凸包)
+    # IMG required to be a color numpy image data.
     
-    blank = np.copy(img)
-    convexes = []
-    for cnt in contours(img, False):
-        convex = cv2.convexHull(cnt)
-        cv2.drawContours(blank, [convex], -1, (0, 255, 0), 2)
-        convexes.append(convex)
+    contours = get_contours(img, show)
+    convexes = [cv2.convexHull(cont) for cont in contours]
+    
+    if show:
+        window = CV2Window('contour detection (convex hull)')
+        cv2.drawContours(img, convexes, -1, (0,255,0), 2)
+        window.imgshow(img)
+        
     return convexes
 
 def convex_poly(img, show=True):
-    cnts = convex(img, show)
+    cnts = get_convex(img, show)
     blank = np.copy(img)
     polies = []
     for cnt in cnts:
         arclen = cv2.arcLength(cnt, True)
         poly = cv2.approxPolyDP(cnt, 0.02*arclen, True)
-        cv2.drawContours(blank, [polu], -1, (0, 255, 0), 2)
+        cv2.drawContours(blank, [poly], -1, (0,255,0), 2)
         polies.append(poly)
     return [poly[:, 0, :] for poly in polies]
 
