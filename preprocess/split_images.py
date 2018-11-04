@@ -125,6 +125,35 @@ def get_convex_poly(img, show=True):
         
     return polies
 
+def get_best_poly(img, show=True):
+    # Get best appropriate (closest to the square) polygon.
+    # POLIES is 2D polygon array data obtained by get_converx_poly.
+
+    # calc score
+    def calc_score(poly):
+        arclen = cv2.arcLength(poly, True)
+        edge_lens = [np.linalg.norm(poly[i] - poly[(i+1) % 4]) for i in range(4)]
+        score = 1 / (sum([arclen/4 - edge_len for edge_len in edge_lens]) + 1)    # avoid devide by zero
+        return score
+
+    # get all polygons
+    polies = get_convex_poly(img, show)
+    
+    # exclude polygons other than 4 corners
+    targetPolies = [poly for poly in polies if poly.shape[0] == 4]
+    
+    scores = [calc_score(poly) for poly in targetPolies]
+    import pdb; pdb.set_trace()
+    best_poly = targetPolies[scores.index(max(scores))]
+
+    if show:
+        window = CV2Window('contour detection (closest square)')
+        tmpimg = np.copy(img)
+        cv2.drawContours(tmpimg, [best_poly], -1, (0,255,0), 2)
+        window.imgshow(tmpimg)
+        
+    return best_poly
+
 def get_board_corners(raw_img, show=True):
     # Get range of shogi board as 2Dpoint (x1,y1), (x2,y2).
     # IMG required to be a color numpy image data.
@@ -132,9 +161,9 @@ def get_board_corners(raw_img, show=True):
     # resize
     img = fit_size(raw_img, show, 500, 500)
 
-    # poly detection
-    polies = get_convex_poly(img, True)
-
+    # choose best fit polygon detection
+    poly = get_best_poly(img, show)
+    
 def main():
     imgpaths = sorted(glob.glob('../images/raw/*.png'))
 
