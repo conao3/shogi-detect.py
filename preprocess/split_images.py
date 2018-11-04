@@ -68,11 +68,12 @@ def get_lines(img, show=True, threshold=80, minLineLength=50, maxLineGap=5):
     lines = cv2.HoughLinesP(edges, 1, np.pi/180, threshold, minLineLength, maxLineGap)
     if show:
         window = CV2Window('line detection')
+        tmpimg = np.copy(img)
         for line in lines:
             for x1,y1,x2,y2 in line:
-                cv2.line(img, (x1,y1), (x2,y2), (0,255,0), 2)
+                cv2.line(tmpimg, (x1,y1), (x2,y2), (0,255,0), 2)
             
-        window.imgshow(img)
+        window.imgshow(tmpimg)
     return lines
 
 def get_contours(img, show=True):
@@ -88,8 +89,9 @@ def get_contours(img, show=True):
 
     if show:
         window = CV2Window('contour detection (raw)')
-        img = cv2.drawContours(img, contours, -1, (0,255,0), 3)
-        window.imgshow(img)
+        tmpimg = np.copy(img)
+        cv2.drawContours(tmpimg, contours, -1, (0,255,0), 3)
+        window.imgshow(tmpimg)
         
     return large_contours
 
@@ -102,8 +104,9 @@ def get_convexes(img, show=True):
     
     if show:
         window = CV2Window('contour detection (convex hull)')
-        cv2.drawContours(img, convexes, -1, (0,255,0), 2)
-        window.imgshow(img)
+        tmpimg = np.copy(img)
+        cv2.drawContours(tmpimg, convexes, -1, (0,255,0), 2)
+        window.imgshow(tmpimg)
         
     return convexes
 
@@ -115,9 +118,10 @@ def get_convex_poly(img, show=True):
     polies = [cv2.approxPolyDP(cont, 0.02*cv2.arcLength(cont,True), True) for cont in contours]
 
     if show:
-        window = CV2Window('contour detection (linear cpprox)')
-        cv2.drawContours(img, polies, -1, (0,255,0), 2)
-        window.imgshow(img)
+        window = CV2Window('contour detection (linear approx)')
+        tmpimg = np.copy(img)
+        cv2.drawContours(tmpimg, polies, -1, (0,255,0), 2)
+        window.imgshow(tmpimg)
         
     return [poly[:, 0, :] for poly in polies]
 
