@@ -123,9 +123,9 @@ def get_convex_poly(img, show=True):
         cv2.drawContours(tmpimg, polies, -1, (0,255,0), 2)
         window.imgshow(tmpimg)
         
-    return [poly[:, 0, :] for poly in polies]
+    return polies
 
-def get_board_point(raw_img, show=True):
+def get_board_corners(raw_img, show=True):
     # Get range of shogi board as 2Dpoint (x1,y1), (x2,y2).
     # IMG required to be a color numpy image data.
 
@@ -138,7 +138,7 @@ def get_board_point(raw_img, show=True):
 def main():
     imgpaths = sorted(glob.glob('../images/raw/*.png'))
 
-    points = [get_board_point(cv2.imread(imgpath), True) for imgpath in imgpaths]
+    points = [get_board_corners(cv2.imread(imgpath), True) for imgpath in imgpaths]
     
     cv2.waitKey(0)
 
