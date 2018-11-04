@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import os
 import cv2
 import numpy as np
 import itertools
@@ -161,7 +161,6 @@ def trans_square(img, poly, show=True):
     srcPoly = np.float32(poly)
     transPoly = np.float32([[300,0], [300,300], [0,300], [0,0]])
 
-    print(poly)
     M = cv2.getPerspectiveTransform(srcPoly, transPoly)
     transImg = cv2.warpPerspective(img, M, (300, 300))
 
@@ -171,15 +170,29 @@ def trans_square(img, poly, show=True):
 
     return transImg
     
-def cut_piecies(img, poly, show=True):
+def cut_piecies(img, poly, filepath, show=True):
     # Cut each piecies.
     # IMG required to be a color numpy image data.
     # POLY is best fitted to board polygon
 
     # transform to right square
     transimg = trans_square(img, poly, show)
-       
-def get_board_corners(raw_img, show=True):
+
+    diffx = transimg.shape[0]/9
+    diffy = transimg.shape[1]/9
+    for xindex in range(9):
+        for yindex in range(9):
+            currentx = diffx * xindex
+            currenty = diffy * yindex
+            dstimg = transimg[(int)(currentx):(int)(currentx+diffx), (int)(currenty):(int)(currenty+diffy)]
+
+            filename, exttype = os.path.splitext(filepath)
+            filename = filename.replace('raw', 'piecies')
+            dstimgpath = "%s%s-%s%s" % (filename, xindex, yindex, exttype)
+
+            cv2.imwrite(dstimgpath, dstimg)
+            
+def get_board_corners(raw_img, filepath, show=True):
     # Get range of shogi board as 2Dpoint (x1,y1), (x2,y2).
     # IMG required to be a color numpy image data.
 
@@ -190,12 +203,12 @@ def get_board_corners(raw_img, show=True):
     poly = get_best_poly(img, show)
 
     # cut piecies
-    cut_piecies(img, poly, show)
+    cut_piecies(img, poly, filepath, show)
     
 def main():
     imgpaths = sorted(glob.glob('../images/raw/*.png'))
 
-    points = [get_board_corners(cv2.imread(imgpath), True) for imgpath in imgpaths]
+    points = [get_board_corners(cv2.imread(imgpath), imgpath, True) for imgpath in imgpaths]
     
     cv2.waitKey(0)
 
