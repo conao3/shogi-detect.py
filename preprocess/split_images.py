@@ -143,17 +143,42 @@ def get_best_poly(img, show=True):
     targetPolies = [poly for poly in polies if poly.shape[0] == 4]
     
     scores = [calc_score(poly) for poly in targetPolies]
-    import pdb; pdb.set_trace()
     best_poly = targetPolies[scores.index(max(scores))]
 
     if show:
         window = CV2Window('contour detection (closest square)')
         tmpimg = np.copy(img)
-        cv2.drawContours(tmpimg, [best_poly], -1, (0,255,0), 2)
+        cv2.drawContours(tmpimg, [best_poly], 0, (0,255,0), 2)
         window.imgshow(tmpimg)
         
     return best_poly
 
+def trans_square(img, poly, show=True):
+    # transform to right square
+    # IMG required to be a color numpy image data.
+    # POLY is best fitted to board polygon
+
+    srcPoly = np.float32(poly)
+    transPoly = np.float32([[300,0], [300,300], [0,300], [0,0]])
+
+    print(poly)
+    M = cv2.getPerspectiveTransform(srcPoly, transPoly)
+    transImg = cv2.warpPerspective(img, M, (300, 300))
+
+    if show:
+        window = CV2Window('trans square')
+        window.imgshow(transImg)
+
+    return transImg
+    
+def cut_piecies(img, poly, show=True):
+    # Cut each piecies.
+    # IMG required to be a color numpy image data.
+    # POLY is best fitted to board polygon
+
+    # transform to right square
+    transimg = trans_square(img, poly, show)
+       
 def get_board_corners(raw_img, show=True):
     # Get range of shogi board as 2Dpoint (x1,y1), (x2,y2).
     # IMG required to be a color numpy image data.
@@ -163,6 +188,9 @@ def get_board_corners(raw_img, show=True):
 
     # choose best fit polygon detection
     poly = get_best_poly(img, show)
+
+    # cut piecies
+    cut_piecies(img, poly, show)
     
 def main():
     imgpaths = sorted(glob.glob('../images/raw/*.png'))
