@@ -80,7 +80,7 @@ def get_contours(img, show=True):
     # Extract contours.
     # IMG required to be a color numpy image data.
     
-    edges = get_edges(img, True)
+    edges = get_edges(img, show)
     contours = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[1]
 
     # remove too small contours
@@ -188,7 +188,7 @@ def cut_piecies(img, poly, filepath, show=True):
 
             filename, exttype = os.path.splitext(filepath)
             filename = filename.replace('raw', 'piecies')
-            dstimgpath = "%s%s-%s%s" % (filename, xindex, yindex, exttype)
+            dstimgpath = "%s-(%s-%s)%s" % (filename, xindex, yindex, exttype)
 
             cv2.imwrite(dstimgpath, dstimg)
             
@@ -208,8 +208,12 @@ def get_board_corners(raw_img, filepath, show=True):
 def main():
     imgpaths = sorted(glob.glob('../images/raw/*.png'))
 
-    points = [get_board_corners(cv2.imread(imgpath), imgpath, True) for imgpath in imgpaths]
-    
+    for imgpath in imgpaths:
+        try:
+            get_board_corners(cv2.imread(imgpath), imgpath, False)
+        except:
+            print("error: %s" % os.path.basename(imgpath))
+            
     cv2.waitKey(0)
 
 if __name__ == '__main__':
