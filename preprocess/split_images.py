@@ -93,8 +93,8 @@ def get_contours(img, show=True):
         
     return large_contours
 
-def get_convex(img, show=True):
-    # get convex hull(凸包)
+def get_convexes(img, show=True):
+    # Get convex hull(凸包) as expansion small lak.
     # IMG required to be a color numpy image data.
     
     contours = get_contours(img, show)
@@ -107,15 +107,18 @@ def get_convex(img, show=True):
         
     return convexes
 
-def convex_poly(img, show=True):
-    cnts = get_convex(img, show)
-    blank = np.copy(img)
-    polies = []
-    for cnt in cnts:
-        arclen = cv2.arcLength(cnt, True)
-        poly = cv2.approxPolyDP(cnt, 0.02*arclen, True)
-        cv2.drawContours(blank, [poly], -1, (0,255,0), 2)
-        polies.append(poly)
+def get_convex_poly(img, show=True):
+    # Get convex polygon as linear approximation of contour.
+    # IMG required to be a color numpy image data.
+    
+    contours = get_convexes(img, show)
+    polies = [cv2.approxPolyDP(cont, 0.02*cv2.arcLength(cont,True), True) for cont in contours]
+
+    if show:
+        window = CV2Window('contour detection (linear cpprox)')
+        cv2.drawContours(img, polies, -1, (0,255,0), 2)
+        window.imgshow(img)
+        
     return [poly[:, 0, :] for poly in polies]
 
 def get_board_point(raw_img, show=True):
@@ -129,7 +132,7 @@ def get_board_point(raw_img, show=True):
     lines = get_lines(img, show)
 
     # poly
-    polies = convex_poly(img, True)
+    polies = get_convex_poly(img, True)
 
 def main():
     imgpaths = sorted(glob.glob('../images/raw/*.png'))
