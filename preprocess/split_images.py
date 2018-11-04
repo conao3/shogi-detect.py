@@ -80,7 +80,7 @@ def get_contours(img, show=True):
     # Extract contours.
     # IMG required to be a color numpy image data.
     
-    edges = get_edges(img, False)
+    edges = get_edges(img, True)
     contours = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[1]
 
     # remove too small contours
@@ -132,10 +132,7 @@ def get_board_point(raw_img, show=True):
     # resize
     img = fit_size(raw_img, show, 500, 500)
 
-    # line detection
-    lines = get_lines(img, show)
-
-    # poly
+    # poly detection
     polies = get_convex_poly(img, True)
 
 def main():
