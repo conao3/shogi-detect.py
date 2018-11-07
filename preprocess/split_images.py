@@ -210,6 +210,7 @@ def main():
 
     for imgpath in imgpaths:
         try:
+            print("processing...: %s" % os.path.basename(imgpath))
             get_board_corners(cv2.imread(imgpath), imgpath, False)
         except:
             print("error: %s" % os.path.basename(imgpath))
