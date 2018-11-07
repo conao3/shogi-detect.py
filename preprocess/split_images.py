@@ -188,7 +188,7 @@ def cut_piecies(img, poly, filepath, show=True):
 
             filename, exttype = os.path.splitext(filepath)
             filename = filename.replace('raw', 'piecies')
-            dstimgpath = "%s-(%s-%s)%s" % (filename, xindex, yindex, exttype)
+            dstimgpath = "%s-(%s-%s)%s" % (filename, xindex+1, yindex+1, exttype)
 
             cv2.imwrite(dstimgpath, dstimg)
             
