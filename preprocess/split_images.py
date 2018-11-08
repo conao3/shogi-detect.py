@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+
+import sys
 import os
 import re
 import cv2
@@ -140,10 +142,10 @@ def get_best_poly(img, show=True):
 
     # get all polygons
     polies = get_convex_poly(img, show)
-    
+
     # exclude polygons other than 4 corners
     targetPolies = [poly for poly in polies if poly.shape[0] == 4]
-    
+
     scores = [calc_score(poly) for poly in targetPolies]
     best_poly = targetPolies[scores.index(max(scores))]
 
@@ -240,16 +242,22 @@ def get_board_corners(raw_img, filepath, show=True):
     cut_piecies(img, poly, filepath, show)
     
 def main():
+    if (len(sys.argv) == 0):
+        frgdebug = False
+    else:
+        frgdebug = True
+        
     imgpaths = sorted(glob.glob('../images/raw/*.png'))
 
     for imgpath in imgpaths:
         try:
             print("processing...: %s" % os.path.basename(imgpath))
             get_board_corners(cv2.imread(imgpath), imgpath, False)
-        except ValueError:
+            if frgdebug:
+                cv2.waitKey(0)
+        except:
             print("error: %s" % os.path.basename(imgpath))
-            
-    cv2.waitKey(0)
+    
 
 if __name__ == '__main__':
     main()
