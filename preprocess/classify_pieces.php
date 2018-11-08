@@ -34,7 +34,7 @@
 	      }
 	  });
 
-	  message = message + "_p/"
+	  message = message + "_/"
 	  showplace = document.getElementById("selectplace");
 	  showplace.innerHTML = message;
       }
@@ -59,6 +59,7 @@
  $i=0;
  foreach($filepaths as $filepath) {
  $i=$i+1;
+ if ($i > 3000) {break;}
  echo "<img width=\"66\", height=\"66\", src=", $filepath, ">";
 echo("\n");
 }
