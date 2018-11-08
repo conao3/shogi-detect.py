@@ -203,7 +203,9 @@ def cut_piecies(img, poly, filepath, show=True):
     # POLY is best fitted to board polygon
 
     # transform to right square
-    transimg = trans_square(img, poly, show)
+    # transimg = trans_square(img, poly, show)
+
+    transimg = img
 
     diffx = transimg.shape[0]/9
     diffy = transimg.shape[1]/9
@@ -234,10 +236,16 @@ def get_board_corners(raw_img, filepath, show=True):
 
     # resize
     img = fit_size(raw_img, show, 500, 500)
-
+    
     # choose best fit polygon detection
-    poly = get_best_poly(img, show)
+    # poly = get_best_poly(img, show)
 
+    # import pdb; pdb.set_trace()
+    shape = img.shape[:2]
+    xmax = shape[0]
+    ymax = shape[1]
+    poly = np.array([[[0, 0]], [[xmax, 0]], [[xmax, ymax]], [[0, ymax]]])
+    
     # cut piecies
     cut_piecies(img, poly, filepath, show)
     
@@ -251,11 +259,11 @@ def main():
 
     for imgpath in imgpaths:
         try:
-            # print("processing...: %s" % os.path.basename(imgpath))
+            print("processing...: %s" % os.path.basename(imgpath))
             get_board_corners(cv2.imread(imgpath), imgpath, False)
             if frgdebug:
                 cv2.waitKey(0)
-        except:
+        except ZeroDivisionError:
             print("%s" % imgpath)
     
 
