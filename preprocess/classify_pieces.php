@@ -34,22 +34,22 @@
 	      }
 	  });
 
-	  message = message + "./selected/"
+	  message = message + "_p/"
 	  showplace = document.getElementById("selectplace");
 	  showplace.innerHTML = message;
       }
     </script>
   </head>
   <body style="background-color:#1C1414; color:#cae682;">
+    <div id="showplace">
+      <input type="button" value="表示" onClick="show()">
+      <textarea id="selectplace" rows="5" cols="50"></textarea>
+    </div>
     <div id="imgplace">
       <?php showimg() ?>
     </div>
     <!-- <?php phpinfo() ?> -->
     <br />
-    <div id="showplace">
-      <input type="button" value="表示" onClick="show()">
-      <textarea id="selectplace" rows="5" cols="50"></textarea>
-    </div>
   </body>
 </html>
 
@@ -59,7 +59,7 @@
  $i=0;
  foreach($filepaths as $filepath) {
  $i=$i+1;
- echo "<img width=\"33\", height=\"33\", src=", $filepath, ">";
+ echo "<img width=\"66\", height=\"66\", src=", $filepath, ">";
 echo("\n");
 }
 }
