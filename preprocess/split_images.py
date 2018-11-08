@@ -3,6 +3,7 @@ import os
 import re
 import cv2
 import numpy as np
+import scipy.stats
 import itertools
 import glob
 
@@ -154,13 +155,36 @@ def get_best_poly(img, show=True):
         
     return best_poly
 
+def makeExactlyPoly(poly):
+    def retPoint(xrank, yrank):
+        if xrank == 1 or xrank == 2:
+            if yrank == 1 or yrank == 2:
+                result = [0, 0]
+            else:
+                result = [0, 300]
+        else:
+            if yrank == 1 or yrank == 2:
+                result = [300, 0]
+            else:
+                result = [300, 300]
+        return result
+    
+    tpoly = poly[:,0]
+    xpoint = tpoly[:,0]
+    ypoint = tpoly[:,1]
+    xrank = scipy.stats.rankdata(xpoint, method='ordinal')
+    yrank = scipy.stats.rankdata(ypoint, method='ordinal')
+
+    result = [retPoint(xrank[i], yrank[i]) for i in range(4)]
+    return result
+    
 def trans_square(img, poly, show=True):
     # transform to right square
     # IMG required to be a color numpy image data.
     # POLY is best fitted to board polygon
 
     srcPoly = np.float32(poly)
-    transPoly = np.float32([[300,0], [300,300], [0,300], [0,0]])
+    transPoly = np.float32(np.array(makeExactlyPoly(srcPoly)))
 
     M = cv2.getPerspectiveTransform(srcPoly, transPoly)
     transImg = cv2.warpPerspective(img, M, (300, 300))
