@@ -133,7 +133,7 @@ def get_best_poly(img, show=True):
     def calc_score(poly):
         arclen = cv2.arcLength(poly, True)
         edge_lens = [np.linalg.norm(poly[i] - poly[(i+1) % 4]) for i in range(4)]
-        score = 1 / (sum([arclen/4 - edge_len for edge_len in edge_lens]) + 1)    # avoid devide by zero
+        score = 1 / (sum([abs(arclen/4 - edge_len) for edge_len in edge_lens]) + 1)    # avoid devide by zero
         return score
 
     # get all polygons
@@ -191,7 +191,10 @@ def cut_piecies(img, poly, filepath, show=True):
             dstimgpath = "%s-(%s-%s)%s" % (filename, xindex+1, yindex+1, exttype)
 
             cv2.imwrite(dstimgpath, dstimg)
-            
+
+    dstimgpath = filepath.replace('raw', 'board')
+    cv2.imwrite(dstimgpath, transimg)
+    
 def get_board_corners(raw_img, filepath, show=True):
     # Get range of shogi board as 2Dpoint (x1,y1), (x2,y2).
     # IMG required to be a color numpy image data.
