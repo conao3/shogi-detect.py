@@ -25,7 +25,7 @@
       message = "mv ";
       images.forEach(function(image) {
       if (image.getAttribute("style")) {
-      message = message + image.getAttribute("src") + " ";
+      message = message + "\"" + image.getAttribute("src") + "\" ";
       }
       });
 

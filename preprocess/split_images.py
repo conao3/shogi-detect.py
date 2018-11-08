@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import re
 import cv2
 import numpy as np
 import itertools
@@ -186,9 +187,15 @@ def cut_piecies(img, poly, filepath, show=True):
             currenty = diffy * yindex
             dstimg = transimg[(int)(currentx):(int)(currentx+diffx), (int)(currenty):(int)(currenty+diffy)]
 
-            filename, exttype = os.path.splitext(filepath)
-            filename = filename.replace('raw', 'piecies')
-            dstimgpath = "%s-(%s-%s)%s" % (filename, xindex+1, yindex+1, exttype)
+            dirpath, basename = os.path.split(filepath)
+            _, exttype = os.path.splitext(filepath)
+            
+            dirpath = dirpath.replace('raw', 'piecies')
+            retmp = re.match(r"([0-9]*).(.*)", basename)
+            imgnum = retmp[1]
+            
+            graylevel = "%04d" % (int)(cv2.cvtColor(dstimg, cv2.COLOR_RGB2GRAY).sum()/(255*33*33)*10000)
+            dstimgpath = "%s/%s-%s-(%s-%s)%s" % (dirpath, graylevel, imgnum, xindex+1, yindex+1, exttype)
 
             cv2.imwrite(dstimgpath, dstimg)
 
@@ -215,7 +222,7 @@ def main():
         try:
             print("processing...: %s" % os.path.basename(imgpath))
             get_board_corners(cv2.imread(imgpath), imgpath, False)
-        except:
+        except ValueError:
             print("error: %s" % os.path.basename(imgpath))
             
     cv2.waitKey(0)
