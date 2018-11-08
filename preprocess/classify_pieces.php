@@ -59,6 +59,7 @@
  $i=0;
  foreach($filepaths as $filepath) {
  $i=$i+1;
+ if ($i > 3000) {break;}
  echo "<img width=\"33\", height=\"33\", src=", $filepath, ">";
 echo("\n");
 }
