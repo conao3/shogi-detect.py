@@ -13,15 +13,17 @@
 	  images.forEach(function(image) {
 	      image.addEventListener("click", function() {
 		  // クリックされたらstyle属性を直接書き換える
-		  image.style.opacity = '0.5';
+		  if (image.style.opacity == '0.5') {
+		      image.removeAttribute("style");
+		  } else {
+		      image.style.opacity = '0.5';
+		  }
 	      }, false);
-
 	      
-	      image.addEventListener("dblclick", function() {
-		  // ダブルクリックされたらstyle属性を除去
-		  image.removeAttribute("style");
-	      }, false);
-
+	      // image.addEventListener("dblclick", function() {
+	      // 	  // ダブルクリックされたらstyle属性を除去
+	      // 	  image.removeAttribute("style");
+	      // }, false);
 	  });
       }
       
@@ -45,6 +47,7 @@
       <input type="button" value="表示" onClick="show()">
       <textarea id="selectplace" rows="5" cols="50"></textarea>
     </div>
+    <br />
     <div id="imgplace">
       <?php showimg() ?>
     </div>
