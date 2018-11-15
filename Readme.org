@@ -7,19 +7,19 @@
 授業において様々な手法での機械学習の理論を学習した。
 このレポートは、理論学習の演習として将棋の駒の識別モデルを作成したことについて、結果と展望を記すものである。
 識別器作成にはMicrosoft Azureが提供している、Custom Visionを使用した。
-Custom Visionは千代田による「松屋警察」(2007)[fn:1](98%の確率で松屋の牛丼を判定可能)など
+Custom Visionは千代田による「[[https://twitter.com/chomado/status/898812060624068609][松屋警察]]」(2007)[fn:1](98%の確率で松屋の牛丼を判定可能)など
 有効なパフォーマンスを示した先行事例があり、手軽さも他のツールを圧倒している。
 将棋の駒の判別として本来ならば、相手駒である反転駒を考慮して30クラス分類となるが、実際の対局のキャプチャ画像を使用したため
 成銀の画像が入手できず、28クラス分類で識別器を作成した。
 それぞれ100枚の画像を使用し、Precision:92.7%, Recall:90.0%の精度で識別ができる識別器を作成できた。
-また、使用した全ツールはgithub[fn:6], Custom Vision[fn:7], image-raw.tar.zip[fn:8]にて公開した。
+また、使用した全ツールは[[https://github.com/conao3/shogi-detect][github]][fn:6], [[https://www.customvision.ai/projects/135388ba-c306-4ab4-b68d-9bfdcf671a0d#/performance][Custom Vision]][fn:7], [[http://apps.conao3.com/files/images-raw.tar.gz][image-raw.tar.gz]][fn:8]にて公開した。
 
 \begin{multicols*}{2}
 * 先行事例研究
-インターネット上において機械学習分野ではすぎゃーんがTensor Flowによるアイドル顔識別器(2016)[fn:2]、その後改良を加え
-2000人のアイドル顔を自力でタグ付けし1000人程度の識別が可能な識別器(2017)[fn:3]などを作成し、機械学習の普及に寄与していた。
+インターネット上において機械学習分野ではすぎゃーんが[[https://qiita.com/sugyan/items/f89cba95d67ab297d306][Tensor Flowによるアイドル顔識別器]](2016)[fn:2]、その後改良を加え
+2000人のアイドル顔を自力でタグ付けし[[https://press.forkwell.com/entry/2017/03/22/085525][1000人程度の識別が可能な識別器]](2017)[fn:3]などを作成し、機械学習の普及に寄与していた。
 
-すぎゃーんのブログにおいて、将棋駒の分類を機械学習によって画像認識する話題[fn:4]があり、Tensor Flowの
+すぎゃーんのブログにおいて、[[https://memo.sugyan.com/entry/2018/05/02/182830][将棋駒の分類を機械学習によって画像認識する話題]][fn:4]があり、Tensor Flowの
 学習済みモデルを適用し識別器を作成していた。
 そこでは識別の精度は悪く、研究は失敗したかのように書かれていた。
 しかし、学習画像と検定画像は大きく異なっており(図[[fig:sugyan]])、
@@ -51,7 +51,7 @@ NHK杯の画像に対して識別することでどれだけの精度を持つ�
 #+attr_latex: :width 5.5cm :float nil
 [[./imgs/php1.jpg]]
 * 学習・性能分析
-本研究では識別器作成機としてMicrosoft AzureのCustom Vision[fn:5]を選定した。
+本研究では識別器作成機としてMicrosoft Azureの[[https://www.customvision.ai][Custom Vision]][fn:5]を選定した。
 Custom Visionは1クラスにつき最低5枚、推奨50枚の画像を必要とし、画像をアップロード・タグ付けし、
 「Train」ボタンを押すだけで識別器を作成できる。
 
