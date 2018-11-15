@@ -77,20 +77,23 @@ Pythonによるランダムノイズを加え、各クラス3000枚の画像を�
 今後はTensor Flowなどを利用してDeep learningを利用した識別器を作成したい。
 \end{multicols*}
 * Footnotes
-
-[fn:6] Detect Shogi-peacies by deep-leaning AI - conao3/shogi-detect
-https://github.com/conao3/shogi-detect - 2018/11/16 閲覧
 [fn:1] ちょまどMadoka @chomado
 https://twitter.com/chomado/status/898812060624068609 - 2018/11/16 閲覧
+
 [fn:2] TensorFlowによるアイドル顔識別器の話 - 2016.12.13 TensorFlow User Group #2
 https://qiita.com/sugyan/items/f89cba95d67ab297d306 - 2018/11/16 閲覧
+
 [fn:3] TensorFlow と出会った「ドルヲタ」エンジニアが1年かけてたどり着いた境地 － LINE すぎゃーん（sugyan）氏
 https://press.forkwell.com/entry/2017/03/22/085525 - 2018/11/16 閲覧
+
 [fn:4] 将棋駒画像の分類器をラクして作る
 https://memo.sugyan.com/entry/2018/05/02/182830 - 2018/11/16 閲覧
+
 [fn:5] Microsoft Azure - Custom Vision
 https://www.customvision.ai - 2018/11/16 閲覧
 
+[fn:6] Detect Shogi-peacies by deep-leaning AI - conao3/shogi-detect
+https://github.com/conao3/shogi-detect - 2018/11/16 閲覧
 
 
 
