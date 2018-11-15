@@ -12,7 +12,7 @@ Custom Visionは千代田による「松屋警察」(2007)[fn:1](98%の確率で
 将棋の駒の判別として本来ならば、相手駒である反転駒を考慮して30クラス分類となるが、実際の対局のキャプチャ画像を使用したため
 成銀の画像が入手できず、28クラス分類で識別器を作成した。
 それぞれ100枚の画像を使用し、Precision:92.7%, Recall:90.0%の精度で識別ができる識別器を作成できた。
-また、使用した全ツールはgithub[fn:6]にて公開した。
+また、使用した全ツールはgithub[fn:6], Custom Vision[fn:7]にて公開した。
 
 \begin{multicols*}{2}
 * 先行事例研究
@@ -95,5 +95,5 @@ https://www.customvision.ai - 2018/11/16 閲覧
 [fn:6] Detect Shogi-peacies by deep-leaning AI - conao3/shogi-detect
 https://github.com/conao3/shogi-detect - 2018/11/16 閲覧
 
-
-
+[fn:7] Microsoft Azure - Custom Vision - Conao:Shogi-detect2
+https://www.customvision.ai/projects/135388ba-c306-4ab4-b68d-9bfdcf671a0d#/performance
