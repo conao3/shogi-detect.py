@@ -25,14 +25,13 @@ class CV2Window:
         cv2.destroyWindow(self.name)
         
 def main():
-    parentdir = "../images/selpiecies"
-    dirnames = ["_nfu", "_nfuv", "_ngin", "_nginv", "_nhi", "_nhiv", "_nka",
-                "_nkav", "_nkaku", "_nkakuv", "_nkei", "_nkeiv", "_nkin", "_no"]
+    parentdir = "../images"
+    dirnames = ["_pfu", "_pfur", "_pgin", "_phi", "_phir", "_pka", "_pkaku", "_pkakur", "_pkar", "_pkei", "_pkeir", "_pkin", "_po", "por"]
 
     for dirname in dirnames:
         images = sorted(glob.glob("%s/%s/*.png" % (parentdir, dirname)))
 
-        savedirname = re.sub('^_n', '_p', dirname)
+        savedirname = re.sub('^_p', '_n', dirname)
         for image in images:
             imagename = os.path.basename(image)
             saveimagepath = "%s/%s/%s" % (parentdir, savedirname, imagename)
