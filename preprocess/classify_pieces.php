@@ -1,3 +1,9 @@
+<!-- mv this folder -->
+<!-- php -S 192.168.10.11:8000 -->
+<!-- Access '192.168.10.11:8000/classify_piecies.php' by web browser -->
+
+<!-- search picture from './image/piecies/*.png' -->
+
 <html>
   <head>
     <meta charset="utf-8">
