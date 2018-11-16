@@ -14,7 +14,7 @@ Custom Visionは千代田による「[[https://twitter.com/chomado/status/898812
 それぞれ100枚の画像を使用し、Precision:92.7%, Recall:90.0%の精度で識別ができる識別器を作成できた。
 また、使用した全ツールは[[https://github.com/conao3/shogi-detect][github]][fn:6], [[https://www.customvision.ai/projects/135388ba-c306-4ab4-b68d-9bfdcf671a0d#/performance][Custom Vision]][fn:7], [[http://apps.conao3.com/files/images-raw.tar.gz][image-raw.tar.gz]][fn:8]にて公開した。
 
-\begin{multicols*}{2}
+#+latex: \begin{multicols*}{2}
 * 先行事例研究
 インターネット上において機械学習分野ではすぎゃーんが[[https://qiita.com/sugyan/items/f89cba95d67ab297d306][Tensor Flowによるアイドル顔識別器]](2016)[fn:2]、その後改良を加え
 2000人のアイドル顔を自力でタグ付けし[[https://press.forkwell.com/entry/2017/03/22/085525][1000人程度の識別が可能な識別器]](2017)[fn:3]などを作成し、機械学習の普及に寄与していた。
@@ -75,7 +75,7 @@ Pythonによるランダムノイズを加え、各クラス3000枚の画像を�
 そのため学習データの大部分をPythonのランダムノイズにより生成された画像であり、それに由来し正答率が低くなってしまったと考えられる。
 
 今後はTensor Flowなどを利用してDeep learningを利用した識別器を作成したい。
-\end{multicols*}
+#+latex: \end{multicols*}
 * Footnotes
 
 [fn:1] ちょまどMadoka @chomado
